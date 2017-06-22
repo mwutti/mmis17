@@ -1,6 +1,7 @@
 import os
 import pickle
 import download_flickr
+import classify
 
 working_directory = os.path.dirname(os.path.realpath(__file__))
 
@@ -19,19 +20,35 @@ if not os.path.isfile(os.path.join(working_directory, "latest.p")):
 
 latestWord = pickle.load(open("latest.p", "rb"))
 
-#init flickr helper
-helper = download_flickr.Flickr()
+#init flickr and keras helper
+flickrHelper = download_flickr.Flickr()
+kerasHelper = classify.Classify()
 
 #start process
 for i, word in enumerate(randomwordList):
     if word == latestWord:
-        photo_urls = []
-        helperResponse = helper.loadImageData(word)
+        print('Processing word ' + word + ' ' + str(i + 1) + ' out of ' + str(len(randomwordList)))
+        photo_urls_src = []
+        photo_urls_org = []
+
+        helperResponse = flickrHelper.loadImageData(word)
 
         for photo in helperResponse['photos']['photo']:
-            photo_urls.append(photo['url_z'])
+            if 'url_q' in photo.keys() and 'url_o' in photo.keys():
+                photo_urls_src.append(photo['url_q'])
+                photo_urls_org.append(photo['url_o'])
 
-        #all urls for the keyword are in photo_urls
+        if len(photo_urls_src) > 0:
+
+            #all urls for the keyword are in photo_urls
+            classified_images = kerasHelper.classifyImagesByUrls(photo_urls_src, photo_urls_org)
+
+            print('writing results to file')
+            #write results to textfile
+            with open(os.path.join(working_directory, 'classify_results.txt'), 'a') as resultfile:
+                resultfile.write('\n'.join('%s %s %f %s %f %s %f %s' % x for x in classified_images))
+
+
 
         latestWord = randomwordList[i + 1]
         pickle.dump(latestWord, open("latest.p", "wb"))
