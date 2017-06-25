@@ -45,7 +45,7 @@ for i, word in enumerate(randomwordList):
 
             print('writing results to file')
             #write results to textfile
-            with open(os.path.join(working_directory, 'classify_results.txt'), 'a') as resultfile:
+            with open(os.path.join(working_directory, 'classify_results1.txt'), 'a') as resultfile:
                 resultfile.write('\n'.join('%s %s %f %s %f %s %f %s' % x for x in classified_images))
 
 
