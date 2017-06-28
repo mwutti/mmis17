@@ -48,13 +48,6 @@ for i, word in enumerate(randomwordList):
             with open(os.path.join(working_directory, 'classify_results1.txt'), 'a') as resultfile:
                 resultfile.write('\n'.join('%s %s %f %s %f %s %f %s' % x for x in classified_images))
 
-
-
         latestWord = randomwordList[i + 1]
         pickle.dump(latestWord, open("latest.p", "wb"))
 
-
-# flickr = FlickrAPI(FLICKR_PUBLIC, FLICKR_SECRET, format='parsed-json')
-# extras='url_sq,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l,url_o'
-# cats = flickr.photos.search(text='kitten', per_page=5, extras=extras)
-# photos = cats['photos']

@@ -2,8 +2,8 @@ from flickrapi import FlickrAPI
 
 
 class Flickr:
-    FLICKR_PUBLIC = '3ca61596336d9f3fec08b403f6967b76'
-    FLICKR_SECRET = 'bed674e575a17080'
+    FLICKR_PUBLIC = 'Enter your API Key'
+    FLICKR_SECRET = 'Insert your API Secret'
     extras = 'url_q,url_o'
 
     def __init__(self):
